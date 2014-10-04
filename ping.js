@@ -22,16 +22,35 @@ canvas.style.height = H;
 
 // Box2d initialization
 
-window.onload = function() {
-	using(Box2D, "b2.+");
-	init();
-	changeTest();
-	animate();
-};
+using(Box2D, "b2.+");
+var gravVec = new b2Vec2(0, 0);
+var world = new b2World(gravVec);
+var staticBody = world.CreateBody(new b2BodyDef());
+// Walls
+var topWallShape = new b2EdgeShape();
+topWallShape.Set(new b2Vec2(0, 0), new b2Vec2(160, 0));
+var topWallFix = new b2FixtureDef();
+topWallFix.set_shape(topWallShape);
+staticBody.CreateFixture(topWallFix);
+var bottomWallShape = new b2EdgeShape();
+bottomWallShape.Set(new b2Vec2(0, 90), new b2Vec2(160, 90));
+var bottomWallFix = new b2FixtureDef();
+bottomWallFix.set_shape(bottomWallShape);
+staticBody.CreateFixture(bottomWallFix);
 
 // Game logic
 
-window.setInterval(function(){update()}, 1000/FPS);
+// Game setup
+
+var puckBodyDef = new b2BodyDef();
+puckBodyDef.set_type(b2_dynamicBody);
+puckBodyDef.set_position(80, 45);
+var puckBody = world.CreateBody(puckBodyDef);
+var puckShape = new b2CircleShape();
+puckShape.set_m_radius(10);
+puckBody.CreateFixture(puckShape, 1);
+
+window.setInterval(function(){update();}, 1000/FPS);
 
 function update()
 {
