@@ -68,6 +68,13 @@ function draw()
 {
 	context.fillStyle = "#000000";
 	context.fillRect(0, 0, W, H);
+	
+	// Draw puck
+	var pos = puckBody.get_position();
+	context.beginPath();
+	context.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
+	context.fillStyle = '#ffffff';
+	context.fill();
 }
 
 
