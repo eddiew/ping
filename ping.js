@@ -4,6 +4,7 @@ var W = 160, H = 90, CW, CH, R = W / H;
 var FPS = 60;
 var PADDLE_HEIGHT = 15;
 var PADDLE_WIDTH = 3;
+var PADDLE_SPEED = 45;
 
 var canvas = document.getElementById("canvas");
 var context = canvas.getContext("2d");
@@ -37,8 +38,6 @@ world.SetDebugDraw(debugDraw);
 // Game setup
 
 // Variable initialization
-var lPadY = (H - PADDLE_HEIGHT) / 2;
-var rPadY = lPadY;
 
 // Walls
 var topWallShape = new b2EdgeShape();
@@ -77,12 +76,14 @@ var paddleShape = createPolygonShape(paddleVerts);
 var padFixtureDef = new b2FixtureDef();
 padFixtureDef.set_shape(paddleShape);
 var lPadBodyDef = new b2BodyDef();
-lPadBodyDef.set_position(new b2Vec2(0, lPadY));
+lPadBodyDef.set_type(b2_kinematicBody);
+lPadBodyDef.set_position(new b2Vec2(0, (H - PADDLE_HEIGHT) / 2));
 var lPadBody = world.CreateBody(lPadBodyDef);
 lPadBody.CreateFixture(padFixtureDef);
 
 var rPadBodyDef = new b2BodyDef();
-rPadBodyDef.set_position(new b2Vec2(W - PADDLE_WIDTH, rPadY));
+rPadBodyDef.set_type(b2_kinematicBody);
+rPadBodyDef.set_position(new b2Vec2(W - PADDLE_WIDTH, (H - PADDLE_HEIGHT) / 2));
 var rPadBody = world.CreateBody(rPadBodyDef);
 rPadBody.CreateFixture(padFixtureDef);
 
@@ -91,9 +92,46 @@ rPadBody.CreateFixture(padFixtureDef);
 var lastInterval = (new Date()).getTime();
 window.setInterval(function(){update();}, 1000/FPS);
 
+
+document.onkeydown = function(e) {
+	switch (e.keyCode) {
+		case 38:
+			e.preventDefault();
+			rPadBody.SetLinearVelocity(new b2Vec2(0, -PADDLE_SPEED));
+			break;
+		case 40:
+			e.preventDefault();
+			rPadBody.SetLinearVelocity(new b2Vec2(0, PADDLE_SPEED));
+			break;
+		case 87:
+			lPadBody.SetLinearVelocity(new b2Vec2(0, -PADDLE_SPEED));
+			break;
+		case 83:
+			lPadBody.SetLinearVelocity(new b2Vec2(0, PADDLE_SPEED));
+			break;
+	}
+};
+
+document.onkeyup = function(e) {
+	switch (e.keyCode) {
+		case 38:
+			rPadBody.SetLinearVelocity(new b2Vec2(0, 0));
+			break;
+		case 40:
+			rPadBody.SetLinearVelocity(new b2Vec2(0, 0));
+			break;
+		case 87:
+			lPadBody.SetLinearVelocity(new b2Vec2(0, 0));
+			break;
+		case 83:
+			lPadBody.SetLinearVelocity(new b2Vec2(0, 0));
+			break;
+	}
+};
+
 function update()
 {
-	var currentTime = (new Date()).getTime();
+	var currentTime = Date.now();
 	var delta = currentTime - lastInterval;
 	lastInterval = currentTime;
 	
@@ -105,18 +143,7 @@ function update()
 
 function getInput(delta)
 {
-	document.onkeydown = function(e) {
-		switch (e.keyCode) {
-			case 38:
-				break;
-			case 40:
-				break;
-			case 87:
-				break;
-			case 83:
-				break;
-		}
-	};
+
 }
 
 function draw(delta)
@@ -125,15 +152,15 @@ function draw(delta)
 	context.fillStyle = "#000000";
 	context.fillRect(0, 0, CW, CH);
 	
-	// Draw puck
-	var pos = puckBody.GetPosition();
-	context.beginPath();
-	// context.arc(80, 80, PUCK_RADIUS, 0, 2 * Math.PI, false);
-	context.arc(coordToPixels(pos.get_x()), coordToPixels(pos.get_y()), PUCK_RADIUS, 0, 2 * Math.PI, false);
-	context.fillStyle = '#ffffff';
-	context.fill();
+	// // Draw puck
+	// var pos = puckBody.GetPosition();
+	// context.beginPath();
+	// // context.arc(80, 80, PUCK_RADIUS, 0, 2 * Math.PI, false);
+	// context.arc(coordToPixels(pos.get_x()), coordToPixels(pos.get_y()), PUCK_RADIUS, 0, 2 * Math.PI, false);
+	// context.fillStyle = '#ffffff';
+	// context.fill();
 	
-	//world.DrawDebugData();
+	world.DrawDebugData();
 }
 
 // Utility classes & functions
