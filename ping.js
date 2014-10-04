@@ -4,7 +4,8 @@ var W = 160, H = 90, CW, CH, R = W / H;
 var FPS = 60;
 var PADDLE_HEIGHT = 15;
 var PADDLE_WIDTH = 3;
-var PADDLE_SPEED = 45;
+var PADDLE_SPEED = 100;
+var PUCK_RADIUS = 5;
 
 var canvas = document.getElementById("canvas");
 var context = canvas.getContext("2d");
@@ -52,7 +53,6 @@ bottomWallFix.set_shape(bottomWallShape);
 staticBody.CreateFixture(bottomWallFix);
 
 // Puck setup
-var PUCK_RADIUS = 10;
 var puckBodyDef = new b2BodyDef();
 puckBodyDef.set_type(b2_dynamicBody);
 puckBodyDef.set_position(new b2Vec2(W / 2, H / 2));
