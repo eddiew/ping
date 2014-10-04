@@ -47,12 +47,14 @@ world.SetDebugDraw(debugDraw);
 
 // Game setup
 
+var PUCK_RADIUS = 10;
+
 var puckBodyDef = new b2BodyDef();
 puckBodyDef.set_type(b2_dynamicBody);
 puckBodyDef.set_position(new b2Vec2(80, 45));
 var puckBody = world.CreateBody(puckBodyDef);
 var puckShape = new b2CircleShape();
-puckShape.set_m_radius(10);
+puckShape.set_m_radius(PUCK_RADIUS);
 puckBody.CreateFixture(puckShape, 1);
 
 window.setInterval(function(){update();}, 1000/FPS);
@@ -73,7 +75,16 @@ function draw()
 {
 	context.fillStyle = "#000000";
 	context.fillRect(0, 0, W, H);
-	world.DrawDebugData();
+	
+	// Draw puck
+	var pos = puckBody.GetPosition();
+	context.beginPath();
+	// context.arc(80, 80, PUCK_RADIUS, 0, 2 * Math.PI, false);
+	context.arc(coordToPixels(pos.get_x()), coordToPixels(pos.get_y()), PUCK_RADIUS, 0, 2 * Math.PI, false);
+	context.fillStyle = '#ffffff';
+	context.fill();
+	
+	// world.DrawDebugData();
 }
 
 // Utility classes & functions
