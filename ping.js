@@ -36,6 +36,10 @@ world.SetDebugDraw(debugDraw);
 
 // Game setup
 
+// Variable initialization
+var lPadY = (H - PADDLE_HEIGHT) / 2;
+var rPadY = lPadY;
+
 // Walls
 var topWallShape = new b2EdgeShape();
 topWallShape.Set(new b2Vec2(0, 0), new b2Vec2(W, 0));
@@ -73,12 +77,12 @@ var paddleShape = createPolygonShape(paddleVerts);
 var padFixtureDef = new b2FixtureDef();
 padFixtureDef.set_shape(paddleShape);
 var lPadBodyDef = new b2BodyDef();
-lPadBodyDef.set_position(new b2Vec2(0, (H - PADDLE_HEIGHT) / 2));
+lPadBodyDef.set_position(new b2Vec2(0, lPadY);
 var lPadBody = world.CreateBody(lPadBodyDef);
 lPadBody.CreateFixture(padFixtureDef);
 
 var rPadBodyDef = new b2BodyDef();
-rPadBodyDef.set_position(new b2Vec2(W - PADDLE_WIDTH, (H - PADDLE_HEIGHT) / 2));
+rPadBodyDef.set_position(new b2Vec2(W - PADDLE_WIDTH, rPadY);
 var rPadBody = world.CreateBody(rPadBodyDef);
 rPadBody.CreateFixture(padFixtureDef);
 
@@ -96,7 +100,18 @@ function update()
 
 function getInput()
 {
-	
+	document.onkeydown = function(e) {
+		switch (e.keyCode) {
+			case 38:
+				break;
+			case 40:
+				break;
+			case 87:
+				break;
+			case 83:
+				break;
+		}
+	};
 }
 
 function draw()
@@ -104,15 +119,15 @@ function draw()
 	context.fillStyle = "#000000";
 	context.fillRect(0, 0, CW, CH);
 	
-	// // Draw puck
-	// var pos = puckBody.GetPosition();
-	// context.beginPath();
-	// // context.arc(80, 80, PUCK_RADIUS, 0, 2 * Math.PI, false);
-	// context.arc(coordToPixels(pos.get_x()), coordToPixels(pos.get_y()), PUCK_RADIUS, 0, 2 * Math.PI, false);
-	// context.fillStyle = '#ffffff';
-	// context.fill();
+	// Draw puck
+	var pos = puckBody.GetPosition();
+	context.beginPath();
+	// context.arc(80, 80, PUCK_RADIUS, 0, 2 * Math.PI, false);
+	context.arc(coordToPixels(pos.get_x()), coordToPixels(pos.get_y()), PUCK_RADIUS, 0, 2 * Math.PI, false);
+	context.fillStyle = '#ffffff';
+	context.fill();
 	
-	world.DrawDebugData();
+	//world.DrawDebugData();
 }
 
 // Utility classes & functions
