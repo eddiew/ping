@@ -74,3 +74,6 @@ function draw()
 
 // Utility classes & functions
 
+function coordToPixels(coord) {
+	return coord * W / 160;
+}
