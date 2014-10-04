@@ -53,9 +53,13 @@ var puckBodyDef = new b2BodyDef();
 puckBodyDef.set_type(b2_dynamicBody);
 puckBodyDef.set_position(new b2Vec2(80, 45));
 var puckBody = world.CreateBody(puckBodyDef);
+var puckFixtureDef = new b2FixtureDef();
+puckFixtureDef.set_restitution(1);
 var puckShape = new b2CircleShape();
 puckShape.set_m_radius(PUCK_RADIUS);
-puckBody.CreateFixture(puckShape, 1);
+puckFixtureDef.set_shape(puckShape);
+puckBody.CreateFixture(puckFixtureDef);
+puckBody.SetLinearVelocity(new b2Vec2(0, 100));
 
 window.setInterval(function(){update();}, 1000/FPS);
 
@@ -63,6 +67,7 @@ function update()
 {
 	getInput();
 	// do physics
+	world.Step(1/FPS, 8, 3);
 	draw();
 }
 
@@ -76,15 +81,15 @@ function draw()
 	context.fillStyle = "#000000";
 	context.fillRect(0, 0, W, H);
 	
-	// Draw puck
-	var pos = puckBody.GetPosition();
-	context.beginPath();
-	// context.arc(80, 80, PUCK_RADIUS, 0, 2 * Math.PI, false);
-	context.arc(coordToPixels(pos.get_x()), coordToPixels(pos.get_y()), PUCK_RADIUS, 0, 2 * Math.PI, false);
-	context.fillStyle = '#ffffff';
-	context.fill();
+	// // Draw puck
+	// var pos = puckBody.GetPosition();
+	// context.beginPath();
+	// // context.arc(80, 80, PUCK_RADIUS, 0, 2 * Math.PI, false);
+	// context.arc(coordToPixels(pos.get_x()), coordToPixels(pos.get_y()), PUCK_RADIUS, 0, 2 * Math.PI, false);
+	// context.fillStyle = '#ffffff';
+	// context.fill();
 	
-	// world.DrawDebugData();
+	world.DrawDebugData();
 }
 
 // Utility classes & functions
