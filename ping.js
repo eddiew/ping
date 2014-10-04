@@ -49,7 +49,7 @@ world.SetDebugDraw(debugDraw);
 
 var puckBodyDef = new b2BodyDef();
 puckBodyDef.set_type(b2_dynamicBody);
-puckBodyDef.set_position(80, 45);
+puckBodyDef.set_position(new b2Vec2(80, 45));
 var puckBody = world.CreateBody(puckBodyDef);
 var puckShape = new b2CircleShape();
 puckShape.set_m_radius(10);
