@@ -94,19 +94,25 @@ window.setInterval(function(){update();}, 1000/FPS);
 
 
 document.onkeydown = function(e) {
+	var rPadY = rPadBody.GetPosition().get_y();
+	var lPadY = lPadBody.GetPosition().get_y();
 	switch (e.keyCode) {
 		case 38:
-			e.preventDefault();
+			e.preventDefault(); // prevent arrow keys from scrolling page
+			if (rPadY <= 0) break;
 			rPadBody.SetLinearVelocity(new b2Vec2(0, -PADDLE_SPEED));
 			break;
 		case 40:
 			e.preventDefault();
+			if (rPadY + PADDLE_HEIGHT >= H) break;
 			rPadBody.SetLinearVelocity(new b2Vec2(0, PADDLE_SPEED));
 			break;
 		case 87:
+			if (lPadY <= 0) break;
 			lPadBody.SetLinearVelocity(new b2Vec2(0, -PADDLE_SPEED));
 			break;
 		case 83:
+			if (lPadY + PADDLE_HEIGHT >= H) break;
 			lPadBody.SetLinearVelocity(new b2Vec2(0, PADDLE_SPEED));
 			break;
 	}
@@ -128,6 +134,33 @@ document.onkeyup = function(e) {
 			break;
 	}
 };
+
+function limitPaddles() {
+	// Left Paddle
+	var lPadY = lPadBody.GetPosition().get_y();
+	if (lPadY + PADDLE_HEIGHT >= H) {
+		if (lPadBody.GetLinearVelocity().get_y() > 0) {
+			lPadBody.SetLinearVelocity(new b2Vec2(0, 0));
+		}
+	}
+	else if (lPadY <= 0) {
+		if (lPadBody.GetLinearVelocity().get_y() < 0) {
+			lPadBody.SetLinearVelocity(new b2Vec2(0, 0));
+		}
+	}
+	// Right Paddle
+	var rPadY = rPadBody.GetPosition().get_y();
+	if (rPadY + PADDLE_HEIGHT >= H) {
+		if (rPadBody.GetLinearVelocity().get_y() > 0) {
+			rPadBody.SetLinearVelocity(new b2Vec2(0, 0));
+		}
+	}
+	else if (rPadY <= 0) {
+		if (rPadBody.GetLinearVelocity().get_y() < 0) {
+			rPadBody.SetLinearVelocity(new b2Vec2(0, 0));
+		}
+	}
+}
 
 function update()
 {
