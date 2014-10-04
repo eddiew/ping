@@ -61,6 +61,10 @@ puckFixtureDef.set_shape(puckShape);
 puckBody.CreateFixture(puckFixtureDef);
 puckBody.SetLinearVelocity(new b2Vec2(0, 100));
 
+// Paddle Set Up
+
+var lPadY
+
 window.setInterval(function(){update();}, 1000/FPS);
 
 function update()
@@ -73,7 +77,18 @@ function update()
 
 function getInput()
 {
-	
+	document.onkeydown = function(e){
+		switch (e.keyCode){
+			case 38:
+				break;
+			case 40:
+				break;
+			case 87:
+				break;
+			case 83:
+				break;
+		}
+	}
 }
 
 function draw()
@@ -81,15 +96,15 @@ function draw()
 	context.fillStyle = "#000000";
 	context.fillRect(0, 0, W, H);
 	
-	// // Draw puck
-	// var pos = puckBody.GetPosition();
-	// context.beginPath();
-	// // context.arc(80, 80, PUCK_RADIUS, 0, 2 * Math.PI, false);
-	// context.arc(coordToPixels(pos.get_x()), coordToPixels(pos.get_y()), PUCK_RADIUS, 0, 2 * Math.PI, false);
-	// context.fillStyle = '#ffffff';
-	// context.fill();
+	// Draw puck
+	var pos = puckBody.GetPosition();
+	context.beginPath();
+	// context.arc(80, 80, PUCK_RADIUS, 0, 2 * Math.PI, false);
+	context.arc(coordToPixels(pos.get_x()), coordToPixels(pos.get_y()), PUCK_RADIUS, 0, 2 * Math.PI, false);
+	context.fillStyle = '#ffffff';
+	context.fill();
 	
-	world.DrawDebugData();
+	//world.DrawDebugData();
 }
 
 // Utility classes & functions
