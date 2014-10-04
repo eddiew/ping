@@ -89,9 +89,8 @@ rPadBody.CreateFixture(padFixtureDef);
 
 // Game logic
 
-var lastInterval = (new Date()).getTime();
+var lastInterval = Date.now();
 window.setInterval(function(){update();}, 1000/FPS);
-
 
 document.onkeydown = function(e) {
 	var rPadY = rPadBody.GetPosition().get_y();
@@ -171,6 +170,7 @@ function update()
 	getInput(delta);
 	// do physics
 	world.Step(1/FPS, 8, 3);
+	limitPaddles();
 	draw(delta);
 }
 
