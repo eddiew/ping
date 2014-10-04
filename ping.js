@@ -77,28 +77,33 @@ var paddleShape = createPolygonShape(paddleVerts);
 var padFixtureDef = new b2FixtureDef();
 padFixtureDef.set_shape(paddleShape);
 var lPadBodyDef = new b2BodyDef();
-lPadBodyDef.set_position(new b2Vec2(0, lPadY);
+lPadBodyDef.set_position(new b2Vec2(0, lPadY));
 var lPadBody = world.CreateBody(lPadBodyDef);
 lPadBody.CreateFixture(padFixtureDef);
 
 var rPadBodyDef = new b2BodyDef();
-rPadBodyDef.set_position(new b2Vec2(W - PADDLE_WIDTH, rPadY);
+rPadBodyDef.set_position(new b2Vec2(W - PADDLE_WIDTH, rPadY));
 var rPadBody = world.CreateBody(rPadBodyDef);
 rPadBody.CreateFixture(padFixtureDef);
 
 // Game logic
 
+var lastInterval = (new Date()).getTime();
 window.setInterval(function(){update();}, 1000/FPS);
 
 function update()
 {
-	getInput();
+	var currentTime = (new Date()).getTime();
+	var delta = currentTime - lastInterval;
+	lastInterval = currentTime;
+	
+	getInput(delta);
 	// do physics
 	world.Step(1/FPS, 8, 3);
-	draw();
+	draw(delta);
 }
 
-function getInput()
+function getInput(delta)
 {
 	document.onkeydown = function(e) {
 		switch (e.keyCode) {
@@ -114,8 +119,9 @@ function getInput()
 	};
 }
 
-function draw()
+function draw(delta)
 {
+	console.log(delta);
 	context.fillStyle = "#000000";
 	context.fillRect(0, 0, CW, CH);
 	
