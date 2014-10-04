@@ -1,6 +1,7 @@
 // Canvas initialization
 
 var W, H;
+var FPS = 60;
 
 var canvas = document.getElementById("canvas");
 var context = canvas.getContext("2d");
@@ -18,8 +19,6 @@ W = context.canvas.width;
 H = context.canvas.height;
 canvas.style.width = W;
 canvas.style.height = H;
-context.fillStyle = "#ff0000";
-context.fillRect(0, 0, W, H);
 
 // Box2d initialization
 
@@ -31,6 +30,26 @@ window.onload = function() {
 };
 
 // Game logic
+
+window.setInterval(function(){update()}, 1000/FPS);
+
+function update()
+{
+	getInput();
+	// do physics
+	draw();
+}
+
+function getInput()
+{
+	
+}
+
+function draw()
+{
+	context.fillStyle = "#000000";
+	context.fillRect(0, 0, W, H);
+}
 
 
 
