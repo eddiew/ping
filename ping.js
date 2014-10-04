@@ -1,4 +1,8 @@
-// Box2d & canvas initialization
+// Canvas initialization
+
+
+
+// Box2d initialization
 
 var CANVAS_WIDTH = 640;
 var CANVAS_HEIGHT = 480;
@@ -14,3 +18,4 @@ context.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
 
 
 // Utility classes & functions
+
