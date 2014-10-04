@@ -1,4 +1,8 @@
-// Box2d & canvas initialization
+// Canvas initialization
+
+
+
+// Box2d initialization
 
 
 
@@ -7,3 +11,4 @@
 
 
 // Utility classes & functions
+
