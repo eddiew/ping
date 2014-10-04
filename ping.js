@@ -38,6 +38,11 @@ var bottomWallFix = new b2FixtureDef();
 bottomWallFix.set_shape(bottomWallShape);
 staticBody.CreateFixture(bottomWallFix);
 
+// Box2d debug drawing
+var debugDraw = getCanvasDebugDraw();
+debugDraw.SetFlags(e_shapeBit);
+world.SetDebugDraw(debugDraw);
+
 // Game logic
 
 // Game setup
@@ -68,9 +73,8 @@ function draw()
 {
 	context.fillStyle = "#000000";
 	context.fillRect(0, 0, W, H);
+	world.DrawDebugData();
 }
-
-
 
 // Utility classes & functions
 
