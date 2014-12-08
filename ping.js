@@ -1,3 +1,8 @@
+// Misc init stuff
+var p1ScoreDisplay = document.getElementById("p1score");
+var p2ScoreDisplay = document.getElementById("p2score");
+var p1score = 0, p2score = 0;
+
 // Canvas initialization
 var canvas = document.getElementById("canvas");
 var context = canvas.getContext("2d");
@@ -19,7 +24,7 @@ world.SetDebugDraw(debugDraw);
 // Dimension initialization
 var W = 16, H = 9, CW, CH, R = W / H;
 var FPS = 60;
-var PADDLE_HEIGHT = 1.5;
+var PADDLE_HEIGHT = 2;
 var PADDLE_WIDTH = 0.3;
 var PADDLE_SPEED = 10;
 var PUCK_RADIUS = 0.5;
@@ -97,7 +102,7 @@ rPadBody.CreateFixture(padFixtureDef);
 
 // Game logic
 
-var lastInterval = Date.now();
+var lastTime = Date.now();
 
 window.setInterval(function() {
 	update();
@@ -119,8 +124,8 @@ document.onkeyup = function(e) {
 function update()
 {
 	var currentTime = Date.now();
-	var delta = currentTime - lastInterval;
-	lastInterval = currentTime;
+	var delta = currentTime - lastTime;
+	lastTime = currentTime;
 	
 	processInput(delta);
 	limitPaddles();
@@ -185,12 +190,16 @@ function draw(delta)
 function checkVictory() {
 	var puckX = puckBody.GetPosition().get_x();
 	if (puckX > W || puckX < 0) {
-		// if (puckX > W) { // makes the ball move slowly after resets. why?
-		//	alert('Player 1 wins!');
-		// }
-		// else {
-		//	alert('Player 2 wins!');
-		// }
+		if (puckX > W) { // alerts make the ball move slowly after resets. why?
+			p1score++;
+			p1ScoreDisplay.textContent = p1score;
+			// alert('Player 1 wins!');
+		}
+		else {
+			p2score++;
+			p2ScoreDisplay.textContent = p2score;
+			// alert('Player 2 wins!');
+		}
 		softReset();
 	}
 }
