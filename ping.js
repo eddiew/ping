@@ -234,7 +234,11 @@ function checkBodies() {
 	bodies = bodies.filter(function(body) {
 		var pos = body.GetPosition();
 		var x = pos.get_x(), y = pos.get_y();
-		return x > -W && x < 2*W && y > -H && y < 2*H;
+		var onScreen = x > -W && x < 2*W && y > -H && y < 2*H;
+		if (!onScreen) {
+			world.DestroyBody(body);
+		}
+		return onScreen;
 	});
 }
 
