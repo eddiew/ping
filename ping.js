@@ -100,13 +100,30 @@ rPadBodyDef.set_position(new b2Vec2(W - PADDLE_WIDTH, (H - PADDLE_HEIGHT) / 2));
 var rPadBody = world.CreateBody(rPadBodyDef);
 rPadBody.CreateFixture(padFixtureDef);
 
+// Other bodies
+var bodies = [];
+
 // Game logic
 
 var lastTime = Date.now();
 
-window.setInterval(function() {
-	update();
-}, 1000 / FPS);
+window.setInterval(update, 1000 / FPS);
+
+// Item drops every 5-10 seconds
+window.setTimeout(randomEvent, Math.random() * 1000 + 1000);
+
+function randomEvent() {
+	switch (Math.floor(Math.random() * 1)) {
+		case 0:
+			var newBody = world.CreateBody(puckBodyDef);
+			newBody.CreateFixture(puckFixtureDef);
+			initPuckVelocity(newBody);
+			bodies.push(newBody);
+			break;
+
+	}
+	window.setTimeout(randomEvent, Math.random() * 1000 + 1000);
+}
 
 document.onkeydown = function(e) {
 	if (keysPressed.hasOwnProperty(e.keyCode)) {
@@ -131,8 +148,9 @@ function update()
 	limitPaddles();
 	// do physics
 	world.Step(delta / 1000, 8, 3);
-	draw(delta);
 	checkVictory();
+	checkBodies();
+	draw(delta);
 }
 
 // Process user input to paddle movement
@@ -184,6 +202,14 @@ function draw(delta)
 	var lPadPos = lPadBody.GetPosition();
 	context.fillRect(coordToPixels(lPadPos.get_x()), coordToPixels(lPadPos.get_y()), coordToPixels(PADDLE_WIDTH), coordToPixels(PADDLE_HEIGHT));
 	
+	// Draw other bodies
+	bodies.forEach(function(body) {
+		var pos = body.GetPosition();
+		context.beginPath();
+		context.arc(coordToPixels(pos.get_x()), coordToPixels(pos.get_y()), coordToPixels(PUCK_RADIUS), 0, 2 * Math.PI);
+		context.fillStyle = '#ff0000';
+		context.fill();
+	});
 	// world.DrawDebugData();
 }
 
@@ -202,6 +228,14 @@ function checkVictory() {
 		}
 		softReset();
 	}
+}
+
+function checkBodies() {
+	bodies = bodies.filter(function(body) {
+		var pos = body.GetPosition();
+		var x = pos.get_x(), y = pos.get_y();
+		return x > -W && x < 2*W && y > -H && y < 2*H;
+	});
 }
 
 function softReset() {
